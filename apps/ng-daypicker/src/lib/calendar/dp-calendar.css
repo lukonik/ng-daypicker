@@ -1,0 +1,214 @@
+.dp-calendar {
+  --dp-calendar-cell-size: 2.5rem;
+  --dp-calendar-cell-font-size: 0.875rem;
+  --dp-calendar-header-height: 3rem;
+  --dp-calendar-spacing: 0.5rem;
+  
+  width: 100%;
+  min-width: 20rem;
+}
+
+/* Header */
+.dp-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--dp-calendar-header-height);
+  padding: 0 var(--dp-calendar-spacing);
+  border-bottom: 1px solid var(--dp-border-color);
+  margin-bottom: var(--dp-calendar-spacing);
+}
+
+.dp-calendar__nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--dp-text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dp-calendar__nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dp-calendar__nav-button:focus {
+  outline: 2px solid var(--dp-primary-color);
+  outline-offset: 2px;
+}
+
+.dp-calendar__nav-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.dp-calendar__period-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--dp-text-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease;
+}
+
+.dp-calendar__period-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dp-calendar__period-button:focus {
+  outline: 2px solid var(--dp-primary-color);
+  outline-offset: 2px;
+}
+
+/* Content Areas */
+.dp-calendar__content {
+  padding: 0 var(--dp-calendar-spacing);
+}
+
+/* Weekdays */
+.dp-calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: var(--dp-calendar-spacing);
+}
+
+.dp-calendar__weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+/* Grids */
+.dp-calendar__grid {
+  display: grid;
+  gap: 2px;
+}
+
+.dp-calendar__grid--month {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.dp-calendar__grid--year {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.dp-calendar__grid--multi-year {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Cells */
+.dp-calendar__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--dp-calendar-cell-size);
+  border: none;
+  background: transparent;
+  color: var(--dp-text-color);
+  font-size: var(--dp-calendar-cell-font-size);
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.dp-calendar__cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.dp-calendar__cell--enabled:hover {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dp-calendar__cell--enabled:focus {
+  outline: 2px solid var(--dp-primary-color);
+  outline-offset: -2px;
+}
+
+.dp-calendar__cell--selected {
+  background-color: var(--dp-primary-color);
+  color: white;
+}
+
+.dp-calendar__cell--selected:hover {
+  background-color: var(--dp-primary-color);
+  opacity: 0.9;
+}
+
+.dp-calendar__cell--in-range {
+  background-color: rgba(37, 99, 235, 0.1);
+}
+
+.dp-calendar__cell--in-range.dp-calendar__cell--selected {
+  background-color: var(--dp-primary-color);
+  color: white;
+}
+
+.dp-calendar__cell--today::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: var(--dp-primary-color);
+  border-radius: 50%;
+}
+
+.dp-calendar__cell--today.dp-calendar__cell--selected::after {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.dp-calendar__cell--current-period {
+  font-weight: 600;
+  color: var(--dp-primary-color);
+}
+
+.dp-calendar__cell-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Month specific styling */
+.dp-calendar__cell--date {
+  aspect-ratio: 1;
+}
+
+/* Year and multi-year specific styling */
+.dp-calendar__cell--month,
+.dp-calendar__cell--year {
+  height: 3rem;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .dp-calendar {
+    --dp-calendar-cell-size: 2.25rem;
+    --dp-calendar-cell-font-size: 0.8125rem;
+    min-width: 18rem;
+  }
+  
+  .dp-calendar__period-button {
+    font-size: 0.8125rem;
+  }
+}

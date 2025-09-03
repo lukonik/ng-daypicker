@@ -11,6 +11,7 @@ import {
 } from '@angular/platform-browser';
 import { provideNativeDateAdapter } from 'ng-daypicker';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideClientHydration(withEventReplay()),

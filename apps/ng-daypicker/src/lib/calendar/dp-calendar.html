@@ -1,0 +1,105 @@
+<div class="dp-calendar" [attr.data-view]="view()">
+  
+  <!-- Calendar Header -->
+  <div class="dp-calendar__header">
+    <button 
+      type="button"
+      class="dp-calendar__nav-button dp-calendar__nav-button--previous"
+      (click)="navigatePeriod('previous')"
+      aria-label="Previous period">
+      <span class="dp-calendar__nav-icon">‹</span>
+    </button>
+    
+    <button 
+      type="button"
+      class="dp-calendar__period-button"
+      (click)="onHeaderClick()"
+      [attr.aria-label]="'Current period: ' + periodLabel()">
+      {{ periodLabel() }}
+    </button>
+    
+    <button 
+      type="button"
+      class="dp-calendar__nav-button dp-calendar__nav-button--next"
+      (click)="navigatePeriod('next')"
+      aria-label="Next period">
+      <span class="dp-calendar__nav-icon">›</span>
+    </button>
+  </div>
+
+  <!-- Month View -->
+  @if (view() === 'month') {
+    <div class="dp-calendar__content dp-calendar__content--month">
+      
+      <!-- Weekday Headers -->
+      <div class="dp-calendar__weekdays">
+        @for (weekday of weekdays(); track weekday) {
+          <div class="dp-calendar__weekday">{{ weekday }}</div>
+        }
+      </div>
+
+      <!-- Date Grid -->
+      <div class="dp-calendar__grid dp-calendar__grid--month">
+        @for (cell of monthCells(); track $index) {
+          <button 
+            type="button"
+            class="dp-calendar__cell dp-calendar__cell--date"
+            [class.dp-calendar__cell--enabled]="cell.enabled"
+            [class.dp-calendar__cell--selected]="cell.selected"
+            [class.dp-calendar__cell--in-range]="cell.inRange"
+            [class.dp-calendar__cell--today]="cell.isToday"
+            [disabled]="!cell.enabled"
+            [attr.aria-label]="cell.ariaLabel"
+            (click)="onCellClick(cell)">
+            @if (cell.enabled) {
+              <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
+            }
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Year View -->
+  @if (view() === 'year') {
+    <div class="dp-calendar__content dp-calendar__content--year">
+      <div class="dp-calendar__grid dp-calendar__grid--year">
+        @for (cell of yearCells(); track $index) {
+          <button 
+            type="button"
+            class="dp-calendar__cell dp-calendar__cell--month"
+            [class.dp-calendar__cell--enabled]="cell.enabled"
+            [class.dp-calendar__cell--selected]="cell.selected"
+            [class.dp-calendar__cell--current-period]="cell.isCurrentPeriod"
+            [disabled]="!cell.enabled"
+            [attr.aria-label]="cell.ariaLabel"
+            (click)="onCellClick(cell)">
+            <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Multi-Year View -->
+  @if (view() === 'multi-year') {
+    <div class="dp-calendar__content dp-calendar__content--multi-year">
+      <div class="dp-calendar__grid dp-calendar__grid--multi-year">
+        @for (cell of multiYearCells(); track $index) {
+          <button 
+            type="button"
+            class="dp-calendar__cell dp-calendar__cell--year"
+            [class.dp-calendar__cell--enabled]="cell.enabled"
+            [class.dp-calendar__cell--selected]="cell.selected"
+            [class.dp-calendar__cell--current-period]="cell.isCurrentPeriod"
+            [disabled]="!cell.enabled"
+            [attr.aria-label]="cell.ariaLabel"
+            (click)="onCellClick(cell)">
+            <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+</div>

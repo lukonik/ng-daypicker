@@ -1,1 +1,17 @@
-<p>NgDaypicker works!</p>
+<div class="dp-datepicker" 
+     [class.dp-datepicker--inline]="inline()"
+     [class.dp-datepicker--disabled]="disabled()">
+  
+  <div class="dp-datepicker__content">
+    <dp-calendar
+      [view]="currentView()"
+      [period]="currentPeriod()"
+      [value]="value()"
+      [mode]="mode()"
+      (dateSelected)="onCalendarDateSelected($event)"
+      (viewChanged)="onCalendarViewChanged($event)"
+      (periodChanged)="onCalendarPeriodChanged($event)">
+    </dp-calendar>
+  </div>
+  
+</div>

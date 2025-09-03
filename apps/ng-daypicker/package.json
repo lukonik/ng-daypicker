@@ -3,7 +3,13 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^20.1.0",
-    "@angular/core": "^20.1.0"
+    "@angular/core": "^20.1.0",
+    "@angular/cdk": "^20.0.0",
+    "@angular/forms": "^20.1.0",
+    "rxjs": "~7.8.0",
+    "vite": "^6.0.0",
+    "@analogjs/vite-plugin-angular": "~1.19.1",
+    "@nx/vite": "21.4.1"
   },
   "sideEffects": false
 }

@@ -1,0 +1,33 @@
+.dp-datepicker {
+  --dp-primary-color: #2563eb;
+  --dp-background: #ffffff;
+  --dp-text-color: #374151;
+  --dp-border-color: #d1d5db;
+  --dp-border-radius: 0.5rem;
+  --dp-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--dp-background);
+  border: 1px solid var(--dp-border-color);
+  border-radius: var(--dp-border-radius);
+  color: var(--dp-text-color);
+}
+
+.dp-datepicker--inline {
+  display: inline-block;
+}
+
+.dp-datepicker--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.dp-datepicker__content {
+  padding: 1rem;
+}
+
+.dp-datepicker__placeholder {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+}

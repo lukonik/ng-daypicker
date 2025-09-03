@@ -1,0 +1,249 @@
+/* ng-daypicker CSS Custom Properties */
+
+:root {
+  /* Base Colors */
+  --dp-primary-color: #2563eb;
+  --dp-primary-color-hover: #1d4ed8;
+  --dp-primary-color-active: #1e40af;
+  --dp-primary-color-light: rgba(37, 99, 235, 0.1);
+  --dp-primary-color-lighter: rgba(37, 99, 235, 0.05);
+  
+  /* Background Colors */
+  --dp-background: #ffffff;
+  --dp-background-hover: #f9fafb;
+  --dp-background-active: #f3f4f6;
+  --dp-background-disabled: #f9fafb;
+  
+  /* Text Colors */
+  --dp-text-color: #374151;
+  --dp-text-color-light: #6b7280;
+  --dp-text-color-lighter: #9ca3af;
+  --dp-text-color-disabled: #d1d5db;
+  --dp-text-color-inverse: #ffffff;
+  
+  /* Border Colors */
+  --dp-border-color: #d1d5db;
+  --dp-border-color-hover: #9ca3af;
+  --dp-border-color-active: var(--dp-primary-color);
+  --dp-border-color-disabled: #f3f4f6;
+  
+  /* State Colors */
+  --dp-success-color: #10b981;
+  --dp-success-color-light: rgba(16, 185, 129, 0.1);
+  --dp-warning-color: #f59e0b;
+  --dp-warning-color-light: rgba(245, 158, 11, 0.1);
+  --dp-error-color: #ef4444;
+  --dp-error-color-light: rgba(239, 68, 68, 0.1);
+  
+  /* Shadow and Effects */
+  --dp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --dp-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --dp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --dp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --dp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Border Radius */
+  --dp-border-radius-none: 0;
+  --dp-border-radius-sm: 0.125rem;
+  --dp-border-radius: 0.25rem;
+  --dp-border-radius-md: 0.375rem;
+  --dp-border-radius-lg: 0.5rem;
+  --dp-border-radius-xl: 0.75rem;
+  --dp-border-radius-2xl: 1rem;
+  --dp-border-radius-full: 9999px;
+  
+  /* Spacing */
+  --dp-spacing-0: 0;
+  --dp-spacing-0-5: 0.125rem;
+  --dp-spacing-1: 0.25rem;
+  --dp-spacing-1-5: 0.375rem;
+  --dp-spacing-2: 0.5rem;
+  --dp-spacing-2-5: 0.625rem;
+  --dp-spacing-3: 0.75rem;
+  --dp-spacing-3-5: 0.875rem;
+  --dp-spacing-4: 1rem;
+  --dp-spacing-5: 1.25rem;
+  --dp-spacing-6: 1.5rem;
+  --dp-spacing-7: 1.75rem;
+  --dp-spacing-8: 2rem;
+  --dp-spacing-9: 2.25rem;
+  --dp-spacing-10: 2.5rem;
+  --dp-spacing-11: 2.75rem;
+  --dp-spacing-12: 3rem;
+  --dp-spacing-14: 3.5rem;
+  --dp-spacing-16: 4rem;
+  --dp-spacing-20: 5rem;
+  --dp-spacing-24: 6rem;
+  --dp-spacing-28: 7rem;
+  --dp-spacing-32: 8rem;
+  
+  /* Font Sizes */
+  --dp-font-size-xs: 0.75rem;
+  --dp-font-size-sm: 0.875rem;
+  --dp-font-size-base: 1rem;
+  --dp-font-size-lg: 1.125rem;
+  --dp-font-size-xl: 1.25rem;
+  --dp-font-size-2xl: 1.5rem;
+  --dp-font-size-3xl: 1.875rem;
+  --dp-font-size-4xl: 2.25rem;
+  
+  /* Font Weights */
+  --dp-font-weight-thin: 100;
+  --dp-font-weight-light: 300;
+  --dp-font-weight-normal: 400;
+  --dp-font-weight-medium: 500;
+  --dp-font-weight-semibold: 600;
+  --dp-font-weight-bold: 700;
+  --dp-font-weight-extrabold: 800;
+  --dp-font-weight-black: 900;
+  
+  /* Line Heights */
+  --dp-line-height-none: 1;
+  --dp-line-height-tight: 1.25;
+  --dp-line-height-snug: 1.375;
+  --dp-line-height-normal: 1.5;
+  --dp-line-height-relaxed: 1.625;
+  --dp-line-height-loose: 2;
+  
+  /* Transitions */
+  --dp-transition-none: none;
+  --dp-transition-all: all 0.15s ease-in-out;
+  --dp-transition-colors: color, background-color, border-color 0.15s ease-in-out;
+  --dp-transition-opacity: opacity 0.15s ease-in-out;
+  --dp-transition-shadow: box-shadow 0.15s ease-in-out;
+  --dp-transition-transform: transform 0.15s ease-in-out;
+  
+  /* Z-Index */
+  --dp-z-index-dropdown: 1000;
+  --dp-z-index-sticky: 1020;
+  --dp-z-index-fixed: 1030;
+  --dp-z-index-modal-backdrop: 1040;
+  --dp-z-index-modal: 1050;
+  --dp-z-index-popover: 1060;
+  --dp-z-index-tooltip: 1070;
+  
+  /* Component-specific Variables */
+  
+  /* Calendar */
+  --dp-calendar-cell-size: 2.5rem;
+  --dp-calendar-cell-font-size: var(--dp-font-size-sm);
+  --dp-calendar-header-height: 3rem;
+  --dp-calendar-spacing: var(--dp-spacing-2);
+  --dp-calendar-grid-gap: 2px;
+  --dp-calendar-border-radius: var(--dp-border-radius-md);
+  
+  /* Input */
+  --dp-input-height: 2.5rem;
+  --dp-input-padding-x: var(--dp-spacing-3);
+  --dp-input-padding-y: var(--dp-spacing-2);
+  --dp-input-font-size: var(--dp-font-size-sm);
+  --dp-input-border-width: 1px;
+  --dp-input-border-radius: var(--dp-border-radius);
+  --dp-input-focus-ring-width: 2px;
+  --dp-input-focus-ring-offset: 2px;
+  --dp-input-disabled-opacity: 0.5;
+  
+  /* Button */
+  --dp-button-padding-x: var(--dp-spacing-3);
+  --dp-button-padding-y: var(--dp-spacing-2);
+  --dp-button-font-size: var(--dp-font-size-sm);
+  --dp-button-font-weight: var(--dp-font-weight-medium);
+  --dp-button-border-radius: var(--dp-border-radius);
+  --dp-button-focus-ring-width: 2px;
+  --dp-button-focus-ring-offset: 2px;
+  --dp-button-disabled-opacity: 0.6;
+  
+  /* Overlay */
+  --dp-overlay-backdrop-color: rgba(0, 0, 0, 0.1);
+  --dp-overlay-border-radius: var(--dp-border-radius-lg);
+  --dp-overlay-shadow: var(--dp-shadow-lg);
+  --dp-overlay-offset-x: 0;
+  --dp-overlay-offset-y: 4px;
+  --dp-overlay-min-width: 20rem;
+  --dp-overlay-max-width: 90vw;
+  --dp-overlay-max-height: 90vh;
+  
+  /* Animations */
+  --dp-animation-duration-fast: 0.1s;
+  --dp-animation-duration-normal: 0.15s;
+  --dp-animation-duration-slow: 0.3s;
+  --dp-animation-easing-ease-in: ease-in;
+  --dp-animation-easing-ease-out: ease-out;
+  --dp-animation-easing-ease-in-out: ease-in-out;
+}
+
+/* Dark Theme */
+[data-theme="dark"], 
+.dp-dark-theme,
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Base Colors - Dark Theme */
+    --dp-primary-color: #3b82f6;
+    --dp-primary-color-hover: #2563eb;
+    --dp-primary-color-active: #1d4ed8;
+    --dp-primary-color-light: rgba(59, 130, 246, 0.15);
+    --dp-primary-color-lighter: rgba(59, 130, 246, 0.1);
+    
+    /* Background Colors - Dark Theme */
+    --dp-background: #1f2937;
+    --dp-background-hover: #374151;
+    --dp-background-active: #4b5563;
+    --dp-background-disabled: #1f2937;
+    
+    /* Text Colors - Dark Theme */
+    --dp-text-color: #f9fafb;
+    --dp-text-color-light: #d1d5db;
+    --dp-text-color-lighter: #9ca3af;
+    --dp-text-color-disabled: #6b7280;
+    --dp-text-color-inverse: #111827;
+    
+    /* Border Colors - Dark Theme */
+    --dp-border-color: #374151;
+    --dp-border-color-hover: #4b5563;
+    --dp-border-color-active: var(--dp-primary-color);
+    --dp-border-color-disabled: #374151;
+    
+    /* Shadow and Effects - Dark Theme */
+    --dp-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --dp-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --dp-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --dp-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+    --dp-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    
+    /* Overlay - Dark Theme */
+    --dp-overlay-backdrop-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* High Contrast Theme */
+[data-theme="high-contrast"], 
+.dp-high-contrast-theme {
+  --dp-primary-color: #000000;
+  --dp-primary-color-hover: #333333;
+  --dp-primary-color-active: #000000;
+  --dp-primary-color-light: rgba(0, 0, 0, 0.1);
+  
+  --dp-background: #ffffff;
+  --dp-text-color: #000000;
+  --dp-border-color: #000000;
+  
+  --dp-shadow: none;
+  --dp-shadow-sm: none;
+  --dp-shadow-md: none;
+  --dp-shadow-lg: none;
+  --dp-shadow-xl: none;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dp-animation-duration-fast: 0s;
+    --dp-animation-duration-normal: 0s;
+    --dp-animation-duration-slow: 0s;
+    --dp-transition-all: none;
+    --dp-transition-colors: none;
+    --dp-transition-opacity: none;
+    --dp-transition-shadow: none;
+    --dp-transition-transform: none;
+  }
+}
