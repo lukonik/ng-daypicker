@@ -134,6 +134,11 @@ npx nx run-many -t build  # (preVersionCommand runs this automatically)
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
 
+## MCP Configuration
+
+This project includes an MCP server configuration in `mcp.json`:
+- **nx-mcp**: Provides Nx-specific tools and capabilities via `nx-mcp@latest`
+
 ## Configuration Files
 
 - `nx.json`: Nx workspace configuration with target defaults
@@ -141,3 +146,4 @@ npx nx run-many -t build  # (preVersionCommand runs this automatically)
 - `vitest.workspace.ts`: Test configuration for both projects
 - `eslint.config.mjs`: Workspace-wide linting rules
 - `apps/ng-daypicker/ng-package.json`: Library packaging configuration
+- `mcp.json`: MCP server configuration for enhanced Nx tooling
