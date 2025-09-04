@@ -66,7 +66,8 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
   readonly isOpen = computed(() => this._isOpen());
 
   // ControlValueAccessor implementation
-  private onChange = (_value: DatepickerValue<T> | null) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private onChange = (_: DatepickerValue<T> | null) => {
     // Callback will be set by registerOnChange
   };
   private onTouched = () => {
@@ -85,7 +86,8 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
     this.onTouched = fn;
   }
 
-  setDisabledState(_isDisabled: boolean): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setDisabledState(_: boolean): void {
     // Handled through disabled input signal
   }
 

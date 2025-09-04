@@ -1,0 +1,25 @@
+<div class="dp-calendar__header">
+  <button 
+    type="button"
+    class="dp-calendar__nav-button dp-calendar__nav-button--previous"
+    (click)="onNavigationClick('previous')"
+    aria-label="Previous period">
+    <span class="dp-calendar__nav-icon">‹</span>
+  </button>
+  
+  <button 
+    type="button"
+    class="dp-calendar__period-button"
+    (click)="onHeaderClick()"
+    [attr.aria-label]="'Current period: ' + periodLabel()">
+    {{ periodLabel() }}
+  </button>
+  
+  <button 
+    type="button"
+    class="dp-calendar__nav-button dp-calendar__nav-button--next"
+    (click)="onNavigationClick('next')"
+    aria-label="Next period">
+    <span class="dp-calendar__nav-icon">›</span>
+  </button>
+</div>

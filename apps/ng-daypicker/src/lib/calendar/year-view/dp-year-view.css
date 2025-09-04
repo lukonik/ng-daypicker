@@ -1,0 +1,7 @@
+/* Year View Specific Styles */
+.dp-year-view {
+  width: 100%;
+}
+
+/* Month grid and cells are already styled in the main calendar CSS */
+/* Any year-view specific overrides can be added here */

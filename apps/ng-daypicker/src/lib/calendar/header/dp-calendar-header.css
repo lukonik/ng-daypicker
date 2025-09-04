@@ -1,0 +1,56 @@
+/* Calendar header specific styles */
+.dp-calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--dp-spacing-md);
+  border-bottom: 1px solid var(--dp-color-border);
+}
+
+.dp-calendar__nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--dp-border-radius);
+  background: transparent;
+  color: var(--dp-color-text);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dp-calendar__nav-button:hover:not(:disabled) {
+  background-color: var(--dp-color-hover-bg);
+}
+
+.dp-calendar__nav-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dp-calendar__nav-icon {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.dp-calendar__period-button {
+  flex: 1;
+  margin: 0 var(--dp-spacing-sm);
+  padding: var(--dp-spacing-sm) var(--dp-spacing-md);
+  border: none;
+  border-radius: var(--dp-border-radius);
+  background: transparent;
+  color: var(--dp-color-text);
+  font-size: var(--dp-font-size-md);
+  font-weight: var(--dp-font-weight-medium);
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dp-calendar__period-button:hover:not(:disabled) {
+  background-color: var(--dp-color-hover-bg);
+}

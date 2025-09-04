@@ -7,5 +7,6 @@
     "**/Thumbs.db": true,
     "**/node_modules": true,
     "**/dist": true
-  }
+  },
+  "prettier.configPath": ".prettierrc"
 }

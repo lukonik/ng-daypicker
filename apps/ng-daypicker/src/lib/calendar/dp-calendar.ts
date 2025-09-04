@@ -4,7 +4,6 @@ import {
   ViewEncapsulation,
   input,
   output,
-  computed,
   inject,
 } from '@angular/core';
 import { DateAdapter } from '../adapters/date-adapter';
@@ -16,10 +15,13 @@ import {
   DatepickerValue,
 } from '../models/datepicker-types';
 import { DpMonthView } from './month-view/dp-month-view';
+import { DpYearView } from './year-view/dp-year-view';
+import { DpMultiYearView } from './multi-year-view/dp-multi-year-view';
+import { DpCalendarHeader } from './header/dp-calendar-header';
 
 @Component({
   selector: 'dp-calendar',
-  imports: [DpMonthView],
+  imports: [DpMonthView, DpYearView, DpMultiYearView, DpCalendarHeader],
   templateUrl: './dp-calendar.html',
   styleUrl: './dp-calendar.css',
   encapsulation: ViewEncapsulation.None,
@@ -40,26 +42,6 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
   readonly periodChanged = output<Date>();
 
   // Computed calendar data
-  readonly yearCells = computed(() => this.generateYearCells());
-  readonly multiYearCells = computed(() => this.generateMultiYearCells());
-
-  readonly periodLabel = computed(() => {
-    const period = this.period();
-    const view = this.view();
-
-    switch (view) {
-      case 'month':
-        return this.dateAdapter.format(period, { year: 'numeric', month: 'long' });
-      case 'year':
-        return this.dateAdapter.getYearName(period);
-      case 'multi-year': {
-        const startYear = Math.floor(this.dateAdapter.getYear(period) / 12) * 12;
-        return `${startYear} - ${startYear + 11}`;
-      }
-      default:
-        return '';
-    }
-  });
 
 
   // Event handlers
@@ -67,20 +49,9 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     if (!cell.enabled) return;
 
     const view = this.view();
-    const period = this.period();
     let selectedDate: Date;
 
     switch (view) {
-      case 'year': {
-        selectedDate = this.dateAdapter.createDate(
-          this.dateAdapter.getYear(period),
-          cell.value,
-          1
-        );
-        this.viewChanged.emit({ value: selectedDate, view: 'month' });
-        break;
-      }
-      
       case 'multi-year': {
         selectedDate = this.dateAdapter.createDate(cell.value, 0, 1);
         this.viewChanged.emit({ value: selectedDate, view: 'year' });
@@ -94,7 +65,18 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     this.dateSelected.emit(date);
   }
 
-  onHeaderClick(): void {
+  // Event handler for year view
+  onYearMonthSelected(change: DpCalendarChange): void {
+    this.viewChanged.emit(change);
+  }
+
+  // Event handler for multi-year view
+  onMultiYearSelected(change: DpCalendarChange): void {
+    this.viewChanged.emit(change);
+  }
+
+  // Event handler for calendar header
+  onCalendarHeaderClick(): void {
     const view = this.view();
     
     if (view === 'month') {
@@ -104,7 +86,7 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     }
   }
 
-  navigatePeriod(direction: 'previous' | 'next'): void {
+  onCalendarNavigation(direction: 'previous' | 'next'): void {
     const period = this.period();
     const view = this.view();
     let newPeriod: Date;
@@ -124,48 +106,5 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     this.periodChanged.emit(newPeriod);
   }
 
-  // Private methods for generating calendar data
-
-  private generateYearCells(): CalendarCell[] {
-    const period = this.period();
-    const currentYear = this.dateAdapter.getYear(period);
-    const currentMonth = this.dateAdapter.getMonth(new Date());
-    const monthNames = this.dateAdapter.getMonthNames('short');
-
-    return monthNames.map((name, index) => ({
-      value: index,
-      displayValue: name,
-      ariaLabel: name,
-      enabled: true,
-      selected: false,
-      inRange: false,
-      isToday: false,
-      isCurrentPeriod: index === currentMonth && currentYear === this.dateAdapter.getYear(new Date()),
-    }));
-  }
-
-  private generateMultiYearCells(): CalendarCell[] {
-    const period = this.period();
-    const currentYear = this.dateAdapter.getYear(period);
-    const startYear = Math.floor(currentYear / 12) * 12;
-    const todayYear = this.dateAdapter.getYear(new Date());
-
-    const cells: CalendarCell[] = [];
-
-    for (let year = startYear; year < startYear + 12; year++) {
-      cells.push({
-        value: year,
-        displayValue: String(year),
-        ariaLabel: String(year),
-        enabled: true,
-        selected: false,
-        inRange: false,
-        isToday: false,
-        isCurrentPeriod: year === todayYear,
-      });
-    }
-
-    return cells;
-  }
 
 }

@@ -10,8 +10,8 @@
         "storage": "tmp/local-registry/storage"
       }
     },
-    "check":{
-      "command": "npx nx run-many --target lint test build -p ng-daypicker"
+    "check": {
+      "command": "npx nx format:check && npx nx run-many --target lint test build -p ng-daypicker"
     }
   }
 }

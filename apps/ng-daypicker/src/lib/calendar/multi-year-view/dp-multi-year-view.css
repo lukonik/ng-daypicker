@@ -1,0 +1,28 @@
+/* Multi-year view specific styles */
+.dp-calendar__grid--multi-year {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: var(--dp-spacing-sm);
+}
+
+.dp-calendar__cell--year {
+  padding: var(--dp-spacing-md);
+  min-height: 48px;
+  border-radius: var(--dp-border-radius);
+  font-weight: var(--dp-font-weight-medium);
+}
+
+.dp-calendar__cell--year:hover:not(:disabled) {
+  background-color: var(--dp-color-hover-bg);
+}
+
+.dp-calendar__cell--year.dp-calendar__cell--current-period {
+  background-color: var(--dp-color-today-bg);
+  color: var(--dp-color-today-text);
+}
+
+.dp-calendar__cell--year.dp-calendar__cell--selected {
+  background-color: var(--dp-color-selected-bg);
+  color: var(--dp-color-selected-text);
+}

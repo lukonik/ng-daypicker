@@ -1,31 +1,12 @@
 <div class="dp-calendar" [attr.data-view]="view()">
   
   <!-- Calendar Header -->
-  <div class="dp-calendar__header">
-    <button 
-      type="button"
-      class="dp-calendar__nav-button dp-calendar__nav-button--previous"
-      (click)="navigatePeriod('previous')"
-      aria-label="Previous period">
-      <span class="dp-calendar__nav-icon">‹</span>
-    </button>
-    
-    <button 
-      type="button"
-      class="dp-calendar__period-button"
-      (click)="onHeaderClick()"
-      [attr.aria-label]="'Current period: ' + periodLabel()">
-      {{ periodLabel() }}
-    </button>
-    
-    <button 
-      type="button"
-      class="dp-calendar__nav-button dp-calendar__nav-button--next"
-      (click)="navigatePeriod('next')"
-      aria-label="Next period">
-      <span class="dp-calendar__nav-icon">›</span>
-    </button>
-  </div>
+  <dp-calendar-header
+    [view]="view()"
+    [period]="period()"
+    (headerClick)="onCalendarHeaderClick()"
+    (navigationClick)="onCalendarNavigation($event)">
+  </dp-calendar-header>
 
   <!-- Month View -->
   @if (view() === 'month') {
@@ -42,42 +23,20 @@
   <!-- Year View -->
   @if (view() === 'year') {
     <div class="dp-calendar__content dp-calendar__content--year">
-      <div class="dp-calendar__grid dp-calendar__grid--year">
-        @for (cell of yearCells(); track $index) {
-          <button 
-            type="button"
-            class="dp-calendar__cell dp-calendar__cell--month"
-            [class.dp-calendar__cell--enabled]="cell.enabled"
-            [class.dp-calendar__cell--selected]="cell.selected"
-            [class.dp-calendar__cell--current-period]="cell.isCurrentPeriod"
-            [disabled]="!cell.enabled"
-            [attr.aria-label]="cell.ariaLabel"
-            (click)="onCellClick(cell)">
-            <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
-          </button>
-        }
-      </div>
+      <dp-year-view
+        [period]="period()"
+        (monthSelected)="onYearMonthSelected($event)">
+      </dp-year-view>
     </div>
   }
 
   <!-- Multi-Year View -->
   @if (view() === 'multi-year') {
     <div class="dp-calendar__content dp-calendar__content--multi-year">
-      <div class="dp-calendar__grid dp-calendar__grid--multi-year">
-        @for (cell of multiYearCells(); track $index) {
-          <button 
-            type="button"
-            class="dp-calendar__cell dp-calendar__cell--year"
-            [class.dp-calendar__cell--enabled]="cell.enabled"
-            [class.dp-calendar__cell--selected]="cell.selected"
-            [class.dp-calendar__cell--current-period]="cell.isCurrentPeriod"
-            [disabled]="!cell.enabled"
-            [attr.aria-label]="cell.ariaLabel"
-            (click)="onCellClick(cell)">
-            <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
-          </button>
-        }
-      </div>
+      <dp-multi-year-view
+        [period]="period()"
+        (yearSelected)="onMultiYearSelected($event)">
+      </dp-multi-year-view>
     </div>
   }
 

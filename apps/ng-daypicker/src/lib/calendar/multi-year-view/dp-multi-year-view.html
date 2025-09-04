@@ -1,0 +1,15 @@
+<div class="dp-calendar__grid dp-calendar__grid--multi-year">
+  @for (cell of multiYearCells(); track $index) {
+    <button 
+      type="button"
+      class="dp-calendar__cell dp-calendar__cell--year"
+      [class.dp-calendar__cell--enabled]="cell.enabled"
+      [class.dp-calendar__cell--selected]="cell.selected"
+      [class.dp-calendar__cell--current-period]="cell.isCurrentPeriod"
+      [disabled]="!cell.enabled"
+      [attr.aria-label]="cell.ariaLabel"
+      (click)="onCellClick(cell)">
+      <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
+    </button>
+  }
+</div>
