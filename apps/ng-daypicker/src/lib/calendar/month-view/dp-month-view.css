@@ -1,0 +1,9 @@
+/* Month View Specific Styles */
+.dp-month-view {
+  width: 100%;
+}
+
+/* Weekdays are already styled in the main calendar CSS */
+/* Date grid and cells are already styled in the main calendar CSS */
+
+/* Any month-view specific overrides can be added here */

@@ -30,33 +30,12 @@
   <!-- Month View -->
   @if (view() === 'month') {
     <div class="dp-calendar__content dp-calendar__content--month">
-      
-      <!-- Weekday Headers -->
-      <div class="dp-calendar__weekdays">
-        @for (weekday of weekdays(); track weekday) {
-          <div class="dp-calendar__weekday">{{ weekday }}</div>
-        }
-      </div>
-
-      <!-- Date Grid -->
-      <div class="dp-calendar__grid dp-calendar__grid--month">
-        @for (cell of monthCells(); track $index) {
-          <button 
-            type="button"
-            class="dp-calendar__cell dp-calendar__cell--date"
-            [class.dp-calendar__cell--enabled]="cell.enabled"
-            [class.dp-calendar__cell--selected]="cell.selected"
-            [class.dp-calendar__cell--in-range]="cell.inRange"
-            [class.dp-calendar__cell--today]="cell.isToday"
-            [disabled]="!cell.enabled"
-            [attr.aria-label]="cell.ariaLabel"
-            (click)="onCellClick(cell)">
-            @if (cell.enabled) {
-              <span class="dp-calendar__cell-content">{{ cell.displayValue }}</span>
-            }
-          </button>
-        }
-      </div>
+      <dp-month-view
+        [period]="period()"
+        [value]="value()"
+        [mode]="mode()"
+        (dateSelected)="onMonthDateSelected($event)">
+      </dp-month-view>
     </div>
   }
 

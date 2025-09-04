@@ -1,6 +1,7 @@
 // Core Components
 export * from './lib/ng-daypicker/ng-daypicker';
 export * from './lib/calendar/dp-calendar';
+export * from './lib/calendar/month-view/dp-month-view';
 export * from './lib/overlay/dp-overlay';
 
 // Directives

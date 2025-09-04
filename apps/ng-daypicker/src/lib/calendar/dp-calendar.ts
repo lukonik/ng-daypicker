@@ -13,13 +13,13 @@ import {
   CalendarCell,
   DpCalendarChange,
   SelectionMode,
-  DateRange,
   DatepickerValue,
 } from '../models/datepicker-types';
+import { DpMonthView } from './month-view/dp-month-view';
 
 @Component({
   selector: 'dp-calendar',
-  imports: [],
+  imports: [DpMonthView],
   templateUrl: './dp-calendar.html',
   styleUrl: './dp-calendar.css',
   encapsulation: ViewEncapsulation.None,
@@ -39,37 +39,7 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
   readonly viewChanged = output<DpCalendarChange>();
   readonly periodChanged = output<Date>();
 
-  // Internal state
-  private readonly _selectedDates = computed(() => {
-    const value = this.value();
-    if (!value) return new Set<string>();
-
-    const dateStrings = new Set<string>();
-    const mode = this.mode();
-
-    if (mode === 'single' && value instanceof Date) {
-      dateStrings.add(this.dateAdapter.toIso8601(value));
-    } else if (mode === 'multiple' && Array.isArray(value)) {
-      value.forEach(date => {
-        if (date instanceof Date) {
-          dateStrings.add(this.dateAdapter.toIso8601(date));
-        }
-      });
-    } else if (mode === 'range' && value && typeof value === 'object' && 'start' in value && 'end' in value) {
-      const range = value as DateRange;
-      if (range.start) {
-        dateStrings.add(this.dateAdapter.toIso8601(range.start));
-      }
-      if (range.end) {
-        dateStrings.add(this.dateAdapter.toIso8601(range.end));
-      }
-    }
-
-    return dateStrings;
-  });
-
   // Computed calendar data
-  readonly monthCells = computed(() => this.generateMonthCells());
   readonly yearCells = computed(() => this.generateYearCells());
   readonly multiYearCells = computed(() => this.generateMultiYearCells());
 
@@ -91,9 +61,6 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     }
   });
 
-  readonly weekdays = computed(() => {
-    return this.dateAdapter.getDayOfWeekNames('short');
-  });
 
   // Event handlers
   onCellClick(cell: CalendarCell): void {
@@ -104,16 +71,6 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     let selectedDate: Date;
 
     switch (view) {
-      case 'month': {
-        selectedDate = this.dateAdapter.createDate(
-          this.dateAdapter.getYear(period),
-          this.dateAdapter.getMonth(period),
-          cell.value
-        );
-        this.dateSelected.emit(selectedDate);
-        break;
-      }
-      
       case 'year': {
         selectedDate = this.dateAdapter.createDate(
           this.dateAdapter.getYear(period),
@@ -130,6 +87,11 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
         break;
       }
     }
+  }
+
+  // Event handler for month view
+  onMonthDateSelected(date: Date): void {
+    this.dateSelected.emit(date);
   }
 
   onHeaderClick(): void {
@@ -163,54 +125,6 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
   }
 
   // Private methods for generating calendar data
-  private generateMonthCells(): CalendarCell[] {
-    const period = this.period();
-    const year = this.dateAdapter.getYear(period);
-    const month = this.dateAdapter.getMonth(period);
-    const firstOfMonth = this.dateAdapter.createDate(year, month, 1);
-    const firstDayOfWeek = this.dateAdapter.getDayOfWeek(firstOfMonth);
-    const daysInMonth = this.dateAdapter.getNumDaysInMonth(period);
-    const today = this.dateAdapter.today();
-    const todayIso = this.dateAdapter.toIso8601(today);
-    const selectedDates = this._selectedDates();
-
-    const cells: CalendarCell[] = [];
-
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < firstDayOfWeek; i++) {
-      cells.push({
-        value: 0,
-        displayValue: '',
-        ariaLabel: '',
-        enabled: false,
-        selected: false,
-        inRange: false,
-        isToday: false,
-        isCurrentPeriod: false,
-      });
-    }
-
-    // Add cells for each day of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = this.dateAdapter.createDate(year, month, day);
-      const dateIso = this.dateAdapter.toIso8601(date);
-      const isSelected = selectedDates.has(dateIso);
-      const isInRange = this.isDateInRange(date);
-
-      cells.push({
-        value: day,
-        displayValue: String(day),
-        ariaLabel: this.dateAdapter.format(date, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
-        enabled: true,
-        selected: isSelected,
-        inRange: isInRange,
-        isToday: dateIso === todayIso,
-        isCurrentPeriod: false,
-      });
-    }
-
-    return cells;
-  }
 
   private generateYearCells(): CalendarCell[] {
     const period = this.period();
@@ -254,23 +168,4 @@ export class DpCalendar<T extends SelectionMode = 'single'> {
     return cells;
   }
 
-  private isDateInRange(date: Date): boolean {
-    const value = this.value();
-    const mode = this.mode();
-
-    if (mode !== 'range' || !value || typeof value !== 'object' || !('start' in value && 'end' in value)) {
-      return false;
-    }
-
-    const range = value as DateRange;
-    if (!range.start || !range.end) {
-      return false;
-    }
-
-    const dateTime = date.getTime();
-    const startTime = range.start.getTime();
-    const endTime = range.end.getTime();
-
-    return dateTime >= Math.min(startTime, endTime) && dateTime <= Math.max(startTime, endTime);
-  }
 }

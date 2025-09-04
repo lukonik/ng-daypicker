@@ -9,6 +9,9 @@
         "config": ".verdaccio/config.yml",
         "storage": "tmp/local-registry/storage"
       }
+    },
+    "check":{
+      "command": "npx nx run-many --target lint test build -p ng-daypicker"
     }
   }
 }
