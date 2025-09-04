@@ -6,6 +6,9 @@ export * from './lib/calendar/month-view/dp-month-view';
 export * from './lib/calendar/year-view/dp-year-view';
 export * from './lib/calendar/multi-year-view/dp-multi-year-view';
 
+// Directives
+export * from './lib/directives/dp-input';
+
 // Types and Models
 export * from './lib/models/datepicker-types';
 

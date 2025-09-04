@@ -8,11 +8,13 @@ import {
   computed,
   inject,
   forwardRef,
+  ViewChild,
+  TemplateRef,
+  afterNextRender,
+  ViewContainerRef,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { NgTemplateOutlet } from '@angular/common';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   SelectionMode,
   CalendarView,
@@ -23,10 +25,16 @@ import {
 } from '../models/datepicker-types';
 import { DateAdapter } from '../adapters/date-adapter';
 import { DpCalendar } from '../calendar/dp-calendar';
+import { TemplatePortal } from '@angular/cdk/portal';
+import {
+  Overlay,
+  OverlayRef,
+  STANDARD_DROPDOWN_BELOW_POSITIONS,
+} from '@angular/cdk/overlay';
 
 @Component({
   selector: 'dp-ng-daypicker',
-  imports: [DpCalendar],
+  imports: [DpCalendar, NgTemplateOutlet],
   templateUrl: './ng-daypicker.html',
   styleUrl: './ng-daypicker.css',
   encapsulation: ViewEncapsulation.None,
@@ -39,14 +47,37 @@ import { DpCalendar } from '../calendar/dp-calendar';
     },
   ],
 })
-export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlValueAccessor {
+export class NgDaypicker<T extends SelectionMode = 'single'>
+  implements ControlValueAccessor
+{
   private readonly dateAdapter = inject(DateAdapter);
+  private readonly viewContainerRef = inject(ViewContainerRef);
+  private readonly overlay = inject(Overlay);
+
+  @ViewChild('contentTemplate') contentTemplate!: TemplateRef<unknown>;
+  templatePortal: TemplatePortal | null = null;
+  private overlayRef: OverlayRef | null = null;
+
+  constructor() {
+    afterNextRender(() => {
+      if (this.contentTemplate) {
+        this.templatePortal = new TemplatePortal(
+          this.contentTemplate,
+          this.viewContainerRef
+        );
+      }
+    });
+  }
 
   // Input properties
   readonly mode = input<T>('single' as T);
   readonly inline = input<boolean>(false);
   readonly startView = input<CalendarView>('month');
   readonly disabled = input<boolean>(false);
+
+  // Internal state
+  private readonly _inputHost = signal<HTMLElement | null>(null);
+  readonly inputHost = computed(() => this._inputHost());
 
   // Output events
   readonly selectionChange = output<DpSelectionChange<T>>();
@@ -92,9 +123,18 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
   }
 
   // Public methods
+  setInputHost(element: HTMLElement | null): void {
+    this._inputHost.set(element);
+  }
+
   open(): void {
     if (!this.disabled() && !this._isOpen()) {
       this._isOpen.set(true);
+
+      if (!this.inline() && this.inputHost() && this.templatePortal) {
+        this.createOverlay();
+      }
+
       this.opened.emit();
     }
   }
@@ -102,6 +142,12 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
   close(): void {
     if (this._isOpen()) {
       this._isOpen.set(false);
+
+      if (this.overlayRef) {
+        this.overlayRef.dispose();
+        this.overlayRef = null;
+      }
+
       this.onTouched();
       this.closed.emit();
     }
@@ -119,7 +165,7 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
   protected onSelectionChange(value: DatepickerValue<T>): void {
     this._value.set(value);
     this.onChange(value);
-    
+
     this.selectionChange.emit({
       value,
       mode: this.mode(),
@@ -128,7 +174,13 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
     // Auto-close logic based on mode
     if (this.mode() === 'single') {
       this.close();
-    } else if (this.mode() === 'range' && value && typeof value === 'object' && 'start' in value && 'end' in value) {
+    } else if (
+      this.mode() === 'range' &&
+      value &&
+      typeof value === 'object' &&
+      'start' in value &&
+      'end' in value
+    ) {
       const range = value as DateRange;
       if (range.start && range.end) {
         this.close();
@@ -143,13 +195,22 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
 
     switch (view) {
       case 'month':
-        newPeriod = this.dateAdapter.addCalendarMonths(current, direction === 'next' ? 1 : -1);
+        newPeriod = this.dateAdapter.addCalendarMonths(
+          current,
+          direction === 'next' ? 1 : -1
+        );
         break;
       case 'year':
-        newPeriod = this.dateAdapter.addCalendarYears(current, direction === 'next' ? 1 : -1);
+        newPeriod = this.dateAdapter.addCalendarYears(
+          current,
+          direction === 'next' ? 1 : -1
+        );
         break;
       case 'multi-year':
-        newPeriod = this.dateAdapter.addCalendarYears(current, direction === 'next' ? 12 : -12);
+        newPeriod = this.dateAdapter.addCalendarYears(
+          current,
+          direction === 'next' ? 12 : -12
+        );
         break;
     }
 
@@ -171,29 +232,35 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
         newValue = date as DatepickerValue<T>;
         break;
       }
-      
+
       case 'multiple': {
         const currentMultiple = Array.isArray(currentValue) ? currentValue : [];
         const dateIso = this.dateAdapter.toIso8601(date);
-        const existingIndex = currentMultiple.findIndex(d => 
-          this.dateAdapter.toIso8601(d) === dateIso
+        const existingIndex = currentMultiple.findIndex(
+          (d) => this.dateAdapter.toIso8601(d) === dateIso
         );
-        
+
         if (existingIndex >= 0) {
           // Remove if already selected
-          newValue = currentMultiple.filter((_, i) => i !== existingIndex) as DatepickerValue<T>;
+          newValue = currentMultiple.filter(
+            (_, i) => i !== existingIndex
+          ) as DatepickerValue<T>;
         } else {
           // Add to selection
           newValue = [...currentMultiple, date] as DatepickerValue<T>;
         }
         break;
       }
-      
+
       case 'range': {
-        const currentRange = (currentValue && typeof currentValue === 'object' && 'start' in currentValue && 'end' in currentValue) 
-          ? currentValue as DateRange 
-          : { start: null, end: null };
-        
+        const currentRange =
+          currentValue &&
+          typeof currentValue === 'object' &&
+          'start' in currentValue &&
+          'end' in currentValue
+            ? (currentValue as DateRange)
+            : { start: null, end: null };
+
         if (!currentRange.start || (currentRange.start && currentRange.end)) {
           // Start new range
           newValue = { start: date, end: null } as DatepickerValue<T>;
@@ -201,14 +268,14 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
           // Complete the range
           const start = currentRange.start;
           const end = date;
-          newValue = { 
+          newValue = {
             start: start.getTime() <= end.getTime() ? start : end,
-            end: start.getTime() <= end.getTime() ? end : start
+            end: start.getTime() <= end.getTime() ? end : start,
           } as DatepickerValue<T>;
         }
         break;
       }
-      
+
       default:
         return;
     }
@@ -223,5 +290,33 @@ export class NgDaypicker<T extends SelectionMode = 'single'> implements ControlV
 
   protected onCalendarPeriodChanged(period: Date): void {
     this._currentPeriod.set(period);
+  }
+
+  private createOverlay(): void {
+    const inputHost = this.inputHost();
+    if (!inputHost || !this.templatePortal) return;
+
+    // Create position strategy
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(inputHost)
+      .withPositions(STANDARD_DROPDOWN_BELOW_POSITIONS)
+      .withPush(false);
+
+    // Create overlay configuration
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    });
+
+    // Attach the template portal
+    this.overlayRef.attach(this.templatePortal);
+
+    // Close on backdrop click
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.close();
+    });
   }
 }

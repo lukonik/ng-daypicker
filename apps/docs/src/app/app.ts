@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component, effect, viewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DpInput, NgDaypicker } from 'ng-daypicker';
 
 @Component({
-  imports: [RouterModule],
+  imports: [RouterModule, NgDaypicker, DpInput],
   selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
+  templateUrl: './app.html',
 })
-export class App {}
+export class App {
+  dp = viewChild(NgDaypicker);
+
+  constructor() {
+    afterNextRender(() => {
+      setTimeout(() => {
+        this.dp()?.open();
+      }, 300);
+    });
+  }
+}
