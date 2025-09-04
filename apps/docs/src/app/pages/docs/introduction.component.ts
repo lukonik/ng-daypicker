@@ -79,8 +79,7 @@ export class ExampleComponent &#123;&#125;</code></pre>
           <div class="bg-gray-50 rounded-lg p-4 mb-6">
             <pre class="text-gray-800 text-sm"><code>&lt;dp-ng-daypicker 
   mode="single" 
-  [value]="selectedDate"
-  (selectionChange)="onDateChange($event)"&gt;
+  [formControl]="dateControl"&gt;
 &lt;/dp-ng-daypicker&gt;</code></pre>
           </div>
 
@@ -89,7 +88,7 @@ export class ExampleComponent &#123;&#125;</code></pre>
             <div class="flex justify-center">
               <dp-ng-daypicker 
                 mode="single" 
-                [formControl]="introControl"
+                [formControl]="dateControl"
                 class="inline-block"></dp-ng-daypicker>
             </div>
           </div>
@@ -126,5 +125,5 @@ export class ExampleComponent &#123;&#125;</code></pre>
   imports: [NgDaypicker, ReactiveFormsModule]
 })
 export class IntroductionComponent {
-  introControl = new FormControl<Date | null>(null);
+  dateControl = new FormControl<Date | null>(null);
 }

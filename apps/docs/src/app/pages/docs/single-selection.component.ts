@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { NgDaypicker, DpInput, DpTrigger, DpSelectionChange } from 'ng-daypicker';
+import { NgDaypicker, DpSelectionChange } from 'ng-daypicker';
 
 @Component({
   selector: 'app-single-selection',
@@ -57,37 +57,6 @@ import { NgDaypicker, DpInput, DpTrigger, DpSelectionChange } from 'ng-daypicker
           </div>
         </section>
 
-        <!-- With Input Field -->
-        <section class="mb-12">
-          <h2 class="text-2xl font-semibold text-gray-900 mb-4">With Input Field</h2>
-          <p class="text-gray-700 mb-4">
-            Use the datepicker with an input field for a complete form experience:
-          </p>
-          
-          <div class="bg-gray-50 rounded-lg p-4 mb-6">
-            <pre class="text-gray-800 text-sm"><code>&lt;input 
-  [dpInput]="'single'" 
-  dpTrigger 
-  placeholder="Select a date"
-  class="border rounded px-3 py-2" /&gt;
-&lt;dp-ng-daypicker mode="single"&gt;&lt;/dp-ng-daypicker&gt;</code></pre>
-          </div>
-
-          <div class="bg-white border border-gray-200 rounded-lg p-6 mb-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Input Example</h3>
-            <div class="max-w-sm">
-              <label class="block text-sm font-medium text-gray-700 mb-2">
-                Select Date
-              </label>
-              <input 
-                [dpInput]="'single'" 
-                dpTrigger 
-                placeholder="Click to select a date"
-                [value]="inputDateValue"
-                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" />
-            </div>
-          </div>
-        </section>
 
         <!-- Configuration Options -->
         <section class="mb-12">
@@ -159,12 +128,11 @@ import { NgDaypicker, DpInput, DpTrigger, DpSelectionChange } from 'ng-daypicker
       </div>
     </div>
   `,
-  imports: [NgDaypicker, DpInput, DpTrigger, ReactiveFormsModule]
+  imports: [NgDaypicker, ReactiveFormsModule]
 })
 export class SingleSelectionComponent {
   dateControl = new FormControl<Date | null>(null);
   selectedDateValue: string | null = null;
-  inputDateValue: string = '';
 
   constructor() {
     this.dateControl.valueChanges.subscribe(value => {
