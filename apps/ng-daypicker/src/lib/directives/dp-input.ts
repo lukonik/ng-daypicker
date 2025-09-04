@@ -6,6 +6,7 @@ import {
   DatepickerValue,
 } from '../models/datepicker-types';
 import { DateAdapter } from '../adapters/date-adapter';
+import { DP_DATE_FORMATS } from '../adapters/date-formats';
 
 @Directive({
   selector: '[dpInput]',
@@ -20,6 +21,7 @@ export class DpInput {
 
   private readonly elementRef = inject(ElementRef<HTMLElement>);
   private readonly dateAdapter = inject(DateAdapter);
+  private readonly dateFormats = inject(DP_DATE_FORMATS);
 
   constructor() {
     effect(() => {
@@ -70,29 +72,29 @@ export class DpInput {
   }
 
   private formatSingleDate(date: Date): string {
-    return this.dateAdapter.format(date, 'MM/dd/yyyy');
+    return this.dateAdapter.format(date, this.dateFormats.display.dateInput);
   }
 
   private formatDateRange(range: DateRange): string {
     if (!range.start && !range.end) return '';
     if (!range.start)
       return range.end
-        ? `- ${this.dateAdapter.format(range.end, 'MM/dd/yyyy')}`
+        ? `- ${this.dateAdapter.format(range.end, this.dateFormats.display.dateInput)}`
         : '';
     if (!range.end)
-      return `${this.dateAdapter.format(range.start, 'MM/dd/yyyy')} -`;
+      return `${this.dateAdapter.format(range.start, this.dateFormats.display.dateInput)} -`;
 
     return `${this.dateAdapter.format(
       range.start,
-      'MM/dd/yyyy'
-    )} - ${this.dateAdapter.format(range.end, 'MM/dd/yyyy')}`;
+      this.dateFormats.display.dateInput
+    )} - ${this.dateAdapter.format(range.end, this.dateFormats.display.dateInput)}`;
   }
 
   private formatMultipleDates(dates: Date[]): string {
     if (!dates || dates.length === 0) return '';
 
     return dates
-      .map((date) => this.dateAdapter.format(date, 'MM/dd/yyyy'))
+      .map((date) => this.dateAdapter.format(date, this.dateFormats.display.dateInput))
       .join(', ');
   }
 
